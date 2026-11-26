@@ -57,6 +57,7 @@ public class Main {
         }
         return initialBalance;
     }
+    
     public static void main(String[] args){
         System.out.println("ATM Transactions");
         System.out.println("----------------");

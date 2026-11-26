@@ -1,101 +1,100 @@
 import java.util.Scanner;
-public class Main{
-    public static void main(String[] args) {
+
+public class Main {
+
+    static String studentName(Scanner mark) {
         System.out.println("===== Exam Result =====");
         System.out.println("");
-        Scanner mark = new Scanner(System.in);
-
         System.out.println("Enter your name:");
         String name = mark.nextLine();
-        
-        System.out.println("Enter Tamil Mark:");
-        int tamil = mark.nextInt();
-        
-        while(tamil <= 0 || tamil >= 100){
-            System.out.println("Entered Mark Wrongly");
-            System.out.println("Enter Tamil Mark Again");
-            tamil = mark.nextInt();
-        }
-        
-        System.out.println("Enter English Mark:");
-        int english = mark.nextInt();
-        
-        while(english <= 0 || english >= 100){
-            System.out.println("Entered Mark Wrongly");
-            System.out.println("Enter English Mark Again");
-            english = mark.nextInt();
-        }
-        
-        System.out.println("Enter Maths Mark:");
-        int maths = mark.nextInt();
-        
-        while(maths <= 0 || maths >= 100){
-            System.out.println("Entered Mark Wrongly");
-            System.out.println("Enter Maths Mark Again");
-            maths = mark.nextInt();
-        }
-        
-        System.out.println("Enter Science Mark:");
-        int science = mark.nextInt();
-        
-        while(science <= 0 || science >= 100){
-            System.out.println("Entered Mark Wrongly");
-            System.out.println("Enter Science Mark Again");
-            science = mark.nextInt();
-        }
-        
-        System.out.println("Enter Social Mark:");
-        int social = mark.nextInt();
-        
-        while(social <= 0 || social >= 100){
-            System.out.println("Entered Mark Wrongly");
-            System.out.println("Enter Social Mark Again");
-            social = mark.nextInt();
-        }
-        System.out.println("");
+        return name;
+    }
 
-        int total;
-        float average;
-        char grade;
-        String result;
+    static int[] allMarks(Scanner mark) {
+        int[] marks = new int[5];
+        String[] subject = { "Tamil", "English", "Maths", "Science", "Social" };
 
-        total = tamil + english + maths + science + social;
-        average = total/5;
+        for (int i = 0; i < marks.length; i++) {
+            System.out.println("Enter " + subject[i] + " Mark:");
+            marks[i] = mark.nextInt();
+            while (marks[i] < 0 || marks[i] > 100) {
+                System.out.println("Invalid Mark!.");
+                System.out.println("Enter " + subject[i] + " Mark Again");
+                marks[i] = mark.nextInt();
+            }
+        }
+        return marks;
+    }
 
-        if (average >= 90 && average <= 100){
-            grade = 'A';
-        } else if (average >= 75 && average <= 89){
-            grade  = 'B';
-        } else if (average >= 50 && average <= 74){
-            grade  = 'C';
-        } else if (average >= 35 && average <= 49){
-            grade  = 'E';
+    static int calcTotal(int[] marks) {
+        int total = 0;
+        for (int i = 0; i < marks.length; i++) {
+            total += marks[i];
+        }
+        return total;
+    }
+
+    static float calcAverage(int total) {
+        float average = total / 5.0f;
+        return average;
+    }
+
+    static String calcResult(int[] marks) {
+        for (int i = 0; i < marks.length; i++) {
+            if (marks[i] < 35) {
+                return "Fail";
+            }
+        }
+        return "Pass";
+    }
+
+    static char calcGrade(float average, String result) {
+        if (result.equals("Fail")) {
+            return 'F';
+        }
+        if (average >= 90) {
+            return 'A';
+        } else if (average >= 75) {
+            return 'B';
+        } else if (average >= 50) {
+            return 'C';
+        } else if (average >= 35) {
+            return 'E';
         } else {
-            grade  = 'F';
+            return 'F';
         }
+    }
 
-        if (tamil < 35 || english < 35 || maths < 35 || science < 35 || social < 35){
-            result = "Fail";
-            grade = 'F';
-            System.out.println("Sorry You're " + result);
-        } else {
-            result = "Pass";
-            System.out.println("Congrats You're " + result);
-        }
+    static void showResult(String name, int[] marks, int total, float average, String result, char grade) {
+        String[] subject = { "Tamil", "English", "Maths", "Science", "Social" };
 
-        System.out.println("");
+        System.out.println("\n===== STUDENT RESULT =====");
         System.out.println("Name: " + name);
-        System.out.println("Tamil: " + tamil);
-        System.out.println("English: " + english);
-        System.out.println("Maths: " + maths);
-        System.out.println("Science: " + science);
-        System.out.println("Social: " + social);
-        System.out.println("-------" + "-------");
+
+        for (int i = 0; i < marks.length; i++) {
+            System.out.println(subject[i] + ": " + marks[i]);
+        }
+
+        System.out.println("-------------------------");
         System.out.println("Total: " + total);
-        System.out.println("-------" + "-------");
         System.out.println("Average: " + average);
+        System.out.println("Result: " + result);
         System.out.println("Grade: " + grade);
-        System.out.println("");
+        System.out.println("-------------------------");
+    }
+
+    public static void main(String[] args) {
+
+        Scanner mark = new Scanner(System.in);
+        String name = studentName(mark);
+        int[] marks = allMarks(mark);
+        int total = calcTotal(marks);
+        float average = calcAverage(total);
+        String result = calcResult(marks);
+        char grade = calcGrade(average, result);
+        showResult(name, marks, total, average, result, grade);
+
         mark.close();
+
     }
 }
